@@ -4,9 +4,9 @@ Leaf Node: External Interface - SQLite/PostgreSQL Database
 
 Maps to HW8: models.py, queries.py
 """
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 from pathlib import Path
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))

@@ -4,7 +4,6 @@ Leaf Node: External Interface - File I/O (log files)
 
 Maps to HW8: logging_config/
 """
-import json
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 from pathlib import Path

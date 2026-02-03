@@ -8,7 +8,7 @@ Children:
 
 Responsibility: Coordinate configuration and logging operations
 """
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 from pathlib import Path
 
 import sys

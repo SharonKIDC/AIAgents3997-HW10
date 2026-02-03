@@ -13,7 +13,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 
-from tree.M111.src.main import YAMLConfigNode, MockYAMLInterface, create_node
+from tree.M111.src.main import MockYAMLInterface, create_node
 
 
 class TestMockYAMLInterface:

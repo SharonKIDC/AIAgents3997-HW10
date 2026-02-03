@@ -8,7 +8,7 @@ Children:
 
 Responsibility: Coordinate infrastructure layer (config, logging, data persistence)
 """
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 from pathlib import Path
 
 import sys

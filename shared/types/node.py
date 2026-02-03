@@ -5,7 +5,7 @@ Binary Spanning Tree Architecture for Agent Orchestration
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional, Callable
+from typing import Any, Dict, Optional
 
 
 class NodeLevel(Enum):

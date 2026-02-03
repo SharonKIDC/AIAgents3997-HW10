@@ -13,7 +13,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 
-from tree.M122.src.main import SQLDatabaseNode, MockDatabaseInterface, create_node
+from tree.M122.src.main import MockDatabaseInterface, create_node
 
 
 class TestMockDatabaseInterface:

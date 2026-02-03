@@ -4,7 +4,6 @@ Leaf Node: External Interface - File I/O (YAML files)
 
 Maps to HW8: config/settings.py
 """
-import json
 from typing import Any, Dict, Optional
 from pathlib import Path
 

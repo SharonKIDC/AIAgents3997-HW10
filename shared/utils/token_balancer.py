@@ -12,8 +12,8 @@ Complexity Analysis (O Notation):
 - Partial rebalance: O(n) - subtree update
 - Full rebalance: O(n²) - all paths + weight recalc
 """
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Any
+from dataclasses import dataclass
+from typing import Dict, Any
 import random
 
 
@@ -252,8 +252,9 @@ class TokenBalancer:
             return 0
         if node.is_leaf:
             return self.get_allocation(node.node_id)
-        return (self._get_subtree_budget(node.left) +
-                self._get_subtree_budget(node.right))
+        left = self._get_subtree_budget(node.left)
+        right = self._get_subtree_budget(node.right)
+        return left + right
 
     def _clear_subtree_allocations(self, node: Any) -> None:
         """Clear allocations for all nodes in subtree."""

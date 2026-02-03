@@ -13,7 +13,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 
-from tree.M000.src.main import RootOrchestratorNode, create_node, build_tree
+from tree.M000.src.main import create_node, build_tree
 
 
 class TestRootOrchestratorNode:

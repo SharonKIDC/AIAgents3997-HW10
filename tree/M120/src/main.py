@@ -8,7 +8,7 @@ Children:
 
 Responsibility: Coordinate data persistence across Excel and SQL storage
 """
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 from pathlib import Path
 
 import sys

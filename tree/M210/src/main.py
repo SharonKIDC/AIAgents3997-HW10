@@ -8,7 +8,7 @@ Children:
 
 Responsibility: Coordinate MCP server tools and resources
 """
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 from pathlib import Path
 
 import sys

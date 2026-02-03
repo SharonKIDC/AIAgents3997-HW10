@@ -8,7 +8,7 @@ Children:
 
 Responsibility: Coordinate output generation across web and PDF
 """
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 from pathlib import Path
 
 import sys

@@ -3,7 +3,7 @@ External Interface Definitions
 Defines contracts for external interfaces used by leaf nodes.
 """
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 from dataclasses import dataclass
 
 
