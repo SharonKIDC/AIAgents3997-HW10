@@ -8,8 +8,6 @@ This document details the 10 scenario simulations required by Section 9.5 of the
 
 **Description**: External data input processed and flowing upward through the tree.
 
-**Hebrew**: ינוציח ןותנ תטילק - הלעמל הלוע שעדימ דוביע
-
 **Path**: `M111 → M110 → M100 → M000`
 
 **External Interface**: File I/O (YAML)
@@ -40,8 +38,6 @@ result = root.process({
 ## Scenario 2: LLM Reading (Request and Response)
 
 **Description**: Send request to LLM and return response.
-
-**Hebrew**: LLM-ל האירק - הבושת תרזחו ידועיי הלע לא השקב תחילש
 
 **Path**: `M000 → M200 → M210 → M211`
 
@@ -77,8 +73,6 @@ result = root.process({
 
 **Description**: Identify issues in a single node during coverage/linter phase and fix them.
 
-**Hebrew**: ירלודומ גוביד - ונוקיתו דדוב תמוצב יוהיז (Coverage/Linter בלשכ תוקידב)
-
 **Path**: Single node (e.g., `M122`)
 
 **External Interface**: None (internal testing)
@@ -111,8 +105,6 @@ python -m flake8 tree/M122/src/ --count  # Should be 0
 ## Scenario 4: Hierarchical Aggregation (Leaves to Root)
 
 **Description**: Collect data from multiple leaves spreading upward to root.
-
-**Hebrew**: תיכרריה היצגרגא - שרושל הבחר םילע תסירפמ םינותנ ףוסיא
 
 **Path**: `M110 + M120 → M100 → M000`
 
@@ -159,8 +151,6 @@ result = root.process({
 
 **Description**: Configuration change at root propagates downward to all Mini-Projects.
 
-**Hebrew**: היצרוגיפנוק ןוכדע - Projects-Mini-ה לכל הטמל חלחמה שרושב יוניש
-
 **Path**: `M000 → M100/M200 → Level 2 → All Leaves`
 
 **External Interfaces**: None (internal propagation)
@@ -204,8 +194,6 @@ M000 (root)
 
 **Description**: Failure in leaf bubbles up with retry logic through parent.
 
-**Hebrew**: האיגשב לופיט - באה ךרד רזוח בותינו הלעב ןולשכ
-
 **Path**: `M122 → M120 → M100 (retry)`
 
 **External Interface**: Database (error case)
@@ -241,8 +229,6 @@ result = root.process({
 ## Scenario 7: Load Balancing (Token Transfer Between Leaves)
 
 **Description**: Transfer tasks between leaves to balance token consumption.
-
-**Hebrew**: םיסמוע ןוזיא - םינקוט תכירצ ןוזיאל םילע ןיב תומישמ תרבעה
 
 **Path**: All leaves via M000 (TokenBalancer)
 
@@ -283,8 +269,6 @@ M222: 3000 (20% used)    M222: 8000 (60% used)
 ## Scenario 8: Module Addition (Extending Tree with New Leaf)
 
 **Description**: Extend the tree with a new leaf while preserving structure.
-
-**Hebrew**: לודומ תפסוה - הנבמה תרימש ךות שדח הלעב ץעה תבחרה
 
 **Path**: Parent node (e.g., M220) + New leaf (e.g., M223)
 
@@ -330,8 +314,6 @@ class EmailSenderNode(LeafNode):
 
 **Description**: Combine outputs from multiple leaves into unified result.
 
-**Hebrew**: תואצות גוזימ - הדיחא האצותל םילעה המכמ םיטלפ בוליש
-
 **Path**: `M222 + M221 → M220 → M200 → M000`
 
 **External Interfaces**: Multiple (PDF, HTTP)
@@ -372,8 +354,6 @@ result = root.process({
 ## Scenario 10: Integration Testing (Node with Both Children)
 
 **Description**: Run tests on a node together with both its children.
-
-**Hebrew**: היצרגטניא תקידב - וידלי ינש םע תמוצ לע םינחבמ תצרה
 
 **Path**: `M120` with children `M121` and `M122`
 
@@ -422,18 +402,18 @@ def test_m120_integration_with_children():
 
 ## Summary Table
 
-| # | Scenario (Hebrew) | Description | Path |
-|---|------------------|-------------|------|
-| 1 | ינוציח ןותנ תטילק | External data ingestion (upward) | M111→M110→M100→M000 |
-| 2 | LLM-ל האירק | LLM request and response | M000→M200→M210→M211 |
-| 3 | ירלודומ גוביד | Modular debugging (coverage/linter) | Single node |
-| 4 | תיכרריה היצגרגא | Hierarchical aggregation | Leaves→Root |
-| 5 | היצרוגיפנוק ןוכדע | Configuration update (downward) | M000→All nodes |
-| 6 | האיגשב לופיט | Error handling with retry | M122→M120→retry |
-| 7 | םיסמוע ןוזיא | Load balancing (token transfer) | All leaves |
-| 8 | לודומ תפסוה | Module addition | Parent + new leaf |
-| 9 | תואצות גוזימ | Results merging | Multiple leaves→parent |
-| 10 | היצרגטניא תקידב | Integration testing | Node + both children |
+| # | Scenario | Description | Path |
+|---|----------|-------------|------|
+| 1 | External Data Ingestion | Data flowing upward through tree | M111→M110→M100→M000 |
+| 2 | LLM Reading | Request and response to LLM | M000→M200→M210→M211 |
+| 3 | Modular Debugging | Coverage/linter check and fix | Single node |
+| 4 | Hierarchical Aggregation | Data collection from leaves to root | Leaves→Root |
+| 5 | Configuration Update | Root change propagating downward | M000→All nodes |
+| 6 | Error Handling | Failure with retry through parent | M122→M120→retry |
+| 7 | Load Balancing | Token transfer between leaves | All leaves |
+| 8 | Module Addition | Extending tree with new leaf | Parent + new leaf |
+| 9 | Results Merging | Combining outputs from leaves | Multiple leaves→parent |
+| 10 | Integration Testing | Testing node with both children | Node + both children |
 
 ---
 
