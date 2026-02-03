@@ -1,0 +1,11 @@
+{
+  "node_id": "M110",
+  "name": "Config Handler",
+  "level": 2,
+  "type": "handler",
+  "parent": "M100",
+  "children": {
+    "left": "M111",
+    "right": "M112"
+  }
+}

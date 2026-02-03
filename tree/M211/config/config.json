@@ -1,0 +1,8 @@
+{
+  "node_id": "M211",
+  "name": "MCP Tools",
+  "level": 3,
+  "type": "interface",
+  "parent": "M210",
+  "external_interface": "External API (LLM)"
+}

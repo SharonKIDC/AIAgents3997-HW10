@@ -1,0 +1,11 @@
+{
+  "node_id": "M100",
+  "name": "Infrastructure Manager",
+  "level": 1,
+  "type": "manager",
+  "parent": "M000",
+  "children": {
+    "left": "M110",
+    "right": "M120"
+  }
+}

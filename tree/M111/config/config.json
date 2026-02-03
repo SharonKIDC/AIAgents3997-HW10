@@ -1,0 +1,13 @@
+{
+  "node_id": "M111",
+  "name": "YAML Config Handler",
+  "level": 3,
+  "type": "interface",
+  "parent": "M110",
+  "token_budget": 5000,
+  "external_interface": {
+    "type": "file",
+    "formats": [".yaml", ".yml"],
+    "operations": ["read", "write"]
+  }
+}

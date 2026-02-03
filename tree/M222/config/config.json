@@ -1,0 +1,8 @@
+{
+  "node_id": "M222",
+  "name": "PDF Generator",
+  "level": 3,
+  "type": "interface",
+  "parent": "M220",
+  "external_interface": "File I/O (PDF)"
+}

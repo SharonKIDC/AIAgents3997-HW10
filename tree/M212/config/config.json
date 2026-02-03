@@ -1,0 +1,8 @@
+{
+  "node_id": "M212",
+  "name": "MCP Resources",
+  "level": 3,
+  "type": "interface",
+  "parent": "M210",
+  "external_interface": "External API (Resources)"
+}

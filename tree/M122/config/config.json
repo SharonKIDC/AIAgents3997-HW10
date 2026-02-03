@@ -1,0 +1,8 @@
+{
+  "node_id": "M122",
+  "name": "SQL Database",
+  "level": 3,
+  "type": "interface",
+  "parent": "M120",
+  "external_interface": "SQLite/PostgreSQL"
+}

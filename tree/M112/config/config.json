@@ -1,0 +1,8 @@
+{
+  "node_id": "M112",
+  "name": "Log Writer",
+  "level": 3,
+  "type": "interface",
+  "parent": "M110",
+  "external_interface": "File I/O (Log)"
+}

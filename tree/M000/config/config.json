@@ -1,0 +1,22 @@
+{
+  "node_id": "M000",
+  "name": "Root Orchestrator",
+  "level": 0,
+  "type": "orchestrator",
+  "token_budget": 100000,
+  "children": {
+    "left": "M100",
+    "right": "M200"
+  },
+  "workflows": {
+    "tenant_report": {
+      "steps": ["config", "query", "process", "output"]
+    },
+    "data_sync": {
+      "steps": ["sync"]
+    },
+    "full_pipeline": {
+      "steps": ["config", "query", "mcp", "pdf"]
+    }
+  }
+}

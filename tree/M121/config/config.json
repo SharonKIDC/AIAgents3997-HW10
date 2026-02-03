@@ -1,0 +1,8 @@
+{
+  "node_id": "M121",
+  "name": "Excel Handler",
+  "level": 3,
+  "type": "interface",
+  "parent": "M120",
+  "external_interface": "File I/O (Excel)"
+}

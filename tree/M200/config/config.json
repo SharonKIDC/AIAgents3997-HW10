@@ -1,0 +1,11 @@
+{
+  "node_id": "M200",
+  "name": "Application Manager",
+  "level": 1,
+  "type": "manager",
+  "parent": "M000",
+  "children": {
+    "left": "M210",
+    "right": "M220"
+  }
+}

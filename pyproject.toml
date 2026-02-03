@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bst-orchestration"
+version = "1.0.0"
+description = "Binary Spanning Tree Architecture for AI Agent Orchestration"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Student", email = "student@example.com"}
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "coverage>=7.0",
+    "flake8>=6.0",
+    "pylint>=2.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["shared/tests", "tree"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.coverage.run]
+source = ["shared", "tree"]
+omit = ["*/tests/*", "*/__pycache__/*"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+show_missing = true
+precision = 2
+
+[tool.coverage.html]
+directory = "coverage_html"
+
+[tool.flake8]
+max-line-length = 120
+exclude = [".git", "__pycache__", "build", "dist", "*.egg-info"]
+ignore = ["E501", "W503"]
+
+[tool.pylint.messages_control]
+disable = ["C0114", "C0115", "C0116", "R0903"]

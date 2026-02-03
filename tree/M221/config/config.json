@@ -1,0 +1,8 @@
+{
+  "node_id": "M221",
+  "name": "Web Interface",
+  "level": 3,
+  "type": "interface",
+  "parent": "M220",
+  "external_interface": "HTTP (REST API)"
+}
