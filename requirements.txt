@@ -1,0 +1,3 @@
+# BST Orchestration - Core Dependencies
+# No external dependencies required for core functionality
+# (All external interfaces are mocked)
