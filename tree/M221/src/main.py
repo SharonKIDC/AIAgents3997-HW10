@@ -110,6 +110,13 @@ class MockHTTPInterface(HTTPInterface):
                 data=new_payment
             )
 
+        elif "/api/reports" in url:
+            # Handle report notifications
+            return InterfaceResult(
+                success=True,
+                data={"status": "accepted", "report_type": data.get("type", "unknown")}
+            )
+
         return InterfaceResult(success=False, error="Endpoint not found")
 
     def put(self, url: str, data: Any, headers: Optional[Dict] = None) -> InterfaceResult:
