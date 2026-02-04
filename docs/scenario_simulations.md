@@ -4,44 +4,100 @@ This document details the 10 scenario simulations required by Section 9.5 of the
 
 ---
 
-## Scenario 1: External Data Ingestion (Upward Flow)
+## Scenario 1: Config Load
 
-**Description**: External data input processed and flowing upward through the tree.
+**Description**: Load YAML configuration file and propagate upward through the tree.
 
 **Path**: `M111 → M110 → M100 → M000`
 
 **External Interface**: File I/O (YAML)
 
-**Steps**:
-1. M111 (YAML Config leaf) reads external configuration file
-2. Data validated and parsed at M111
-3. Result propagates up to M110 (Config Handler)
-4. M110 aggregates with sibling data from M112 if needed
-5. Combined result flows to M100 (Infrastructure Manager)
-6. M100 forwards to M000 (Root Orchestrator)
-7. Data now available system-wide
+**Token Consumption**: ~120 tokens
 
-**Token Consumption**: ~50-100 tokens
+**Steps**:
+1. M000 receives configuration request
+2. Routes to M100 (Infrastructure Manager)
+3. M100 delegates to M110 (Config Handler)
+4. M110 calls M111 (YAML Config leaf)
+5. M111 reads external YAML file
+6. Data validated and parsed at M111
+7. Result propagates: M111 → M110 → M100 → M000
 
 **Code Example**:
 ```python
-# Request sent to root
 result = root.process({
-    "action": "initialize",
+    "action": "load_config",
     "config_path": "config/settings.yaml"
 })
-# Data flows: M000 → M100 → M110 → M111 (read) → M110 → M100 → M000
 ```
 
 ---
 
-## Scenario 2: LLM Reading (Request and Response)
+## Scenario 2: Tenant Query
 
-**Description**: Send request to LLM and return response.
+**Description**: Query tenant information from the database.
+
+**Path**: `M122 → M120 → M100 → M000`
+
+**External Interface**: SQLite/PostgreSQL Database
+
+**Token Consumption**: ~180 tokens
+
+**Steps**:
+1. M000 receives tenant query request
+2. Routes to M100 (Infrastructure Manager)
+3. M100 delegates to M120 (Database Handler)
+4. M120 calls M122 (SQL Database leaf)
+5. M122 executes SQL query against database
+6. Result propagates: M122 → M120 → M100 → M000
+
+**Code Example**:
+```python
+result = root.process({
+    "action": "query_tenant",
+    "tenant_id": 123
+})
+```
+
+---
+
+## Scenario 3: Excel Import
+
+**Description**: Import tenant data from an Excel file.
+
+**Path**: `M121 → M120 → M100 → M000`
+
+**External Interface**: File I/O (Excel)
+
+**Token Consumption**: ~150 tokens
+
+**Steps**:
+1. M000 receives import request
+2. Routes to M100 (Infrastructure Manager)
+3. M100 delegates to M120 (Database Handler)
+4. M120 calls M121 (Excel Handler leaf)
+5. M121 reads and parses Excel file
+6. Result propagates: M121 → M120 → M100 → M000
+
+**Code Example**:
+```python
+result = root.process({
+    "action": "import_excel",
+    "file_path": "data/tenants.xlsx"
+})
+```
+
+---
+
+## Scenario 4: MCP Tool Call
+
+**Description**: Call external LLM tool via MCP interface.
 
 **Path**: `M000 → M200 → M210 → M211`
 
 **External Interface**: External API (LLM/MCP)
+
+**Token Consumption**: ~200 tokens
 
 **Steps**:
 1. M000 receives tool call request
@@ -49,371 +105,216 @@ result = root.process({
 3. M200 delegates to M210 (Server Handler)
 4. M210 calls M211 (MCP Tools leaf)
 5. M211 sends request to external LLM API
-6. LLM response received at M211
-7. Response propagates back: M211 → M210 → M200 → M000
-
-**Token Consumption**: ~100-500 tokens (varies by LLM response)
+6. Response propagates: M211 → M210 → M200 → M000
 
 **Code Example**:
 ```python
 result = root.process({
-    "action": "route_request",
-    "target": "application",
-    "request": {
-        "action": "call_tool",
-        "tool_name": "tenant_search",
-        "params": {"query": "find tenant in unit A101"}
-    }
+    "action": "call_tool",
+    "tool_name": "tenant_search",
+    "params": {"query": "find tenant in unit A101"}
 })
 ```
 
 ---
 
-## Scenario 3: Modular Debugging (Coverage/Linter Check)
+## Scenario 5: PDF Generation
 
-**Description**: Identify issues in a single node during coverage/linter phase and fix them.
+**Description**: Generate a PDF report for a tenant.
 
-**Path**: Single node (e.g., `M122`)
+**Path**: `M000 → M200 → M220 → M222`
 
-**External Interface**: None (internal testing)
+**External Interface**: File I/O (PDF)
 
-**Steps**:
-1. Run linter on specific node: `flake8 tree/M122/src/`
-2. Identify issues (unused imports, line length, etc.)
-3. Fix identified issues in the node's source
-4. Run coverage: `pytest tree/M122/tests/ --cov=tree/M122/src`
-5. Identify untested paths
-6. Add tests for uncovered branches
-7. Verify fix: re-run linter and coverage
-
-**Commands**:
-```bash
-# Step 1: Identify linter issues
-python -m flake8 tree/M122/src/ --count
-
-# Step 2: Run coverage
-python -m pytest tree/M122/tests/ --cov=tree/M122/src --cov-report=term-missing
-
-# Step 3: Fix and re-verify
-python -m flake8 tree/M122/src/ --count  # Should be 0
-```
-
-**Token Consumption**: N/A (development activity)
-
----
-
-## Scenario 4: Hierarchical Aggregation (Leaves to Root)
-
-**Description**: Collect data from multiple leaves spreading upward to root.
-
-**Path**: `M110 + M120 → M100 → M000`
-
-**External Interfaces**: Multiple leaf interfaces
+**Token Consumption**: ~160 tokens
 
 **Steps**:
-1. M000 requests infrastructure status
-2. M100 queries both children (M110, M120)
-3. M110 aggregates from M111 (config) and M112 (logs)
-4. M120 aggregates from M121 (Excel) and M122 (SQL)
-5. M100 merges results from M110 and M120
-6. Combined hierarchical result returns to M000
-7. Root has full infrastructure view
-
-**Token Consumption**: ~150-300 tokens
+1. M000 receives PDF generation request
+2. Routes to M200 (Application Manager)
+3. M200 delegates to M220 (Output Handler)
+4. M220 calls M222 (PDF Generator leaf)
+5. M222 generates and writes PDF file
+6. Result propagates: M222 → M220 → M200 → M000
 
 **Code Example**:
 ```python
 result = root.process({
-    "action": "status"
+    "action": "generate_pdf",
+    "tenant_id": 123,
+    "report_type": "monthly"
 })
-# Returns aggregated status from all 15 nodes
 ```
 
-**Result Structure**:
-```json
-{
-  "node_id": "M000",
-  "children": {
-    "M100": {
-      "children": {
-        "M110": {"M111": {...}, "M112": {...}},
-        "M120": {"M121": {...}, "M122": {...}}
-      }
-    },
-    "M200": {...}
-  }
+---
+
+## Scenario 6: Web API Request
+
+**Description**: Handle incoming REST API request.
+
+**Path**: `M221 → M220 → M200 → M000`
+
+**External Interface**: HTTP (REST API)
+
+**Token Consumption**: ~140 tokens
+
+**Steps**:
+1. M221 (Web Interface leaf) receives HTTP request
+2. Request validated at M221
+3. Propagates to M220 (Output Handler)
+4. M220 forwards to M200 (Application Manager)
+5. M200 forwards to M000 (Root Orchestrator)
+6. Response flows back down the same path
+
+**Code Example**:
+```python
+# Incoming request at M221
+request = {
+    "method": "GET",
+    "path": "/api/tenants/123",
+    "headers": {"Authorization": "Bearer ..."}
 }
+result = m221.handle_request(request)
 ```
 
 ---
 
-## Scenario 5: Configuration Update (Root to Leaves)
+## Scenario 7: Hierarchical Merge
 
-**Description**: Configuration change at root propagates downward to all Mini-Projects.
+**Description**: Merge configuration and database data at parent level.
 
-**Path**: `M000 → M100/M200 → Level 2 → All Leaves`
+**Path**: `M110 + M120 → M100`
 
-**External Interfaces**: None (internal propagation)
+**External Interfaces**: YAML (via M111), Database (via M122)
+
+**Token Consumption**: ~130 tokens
 
 **Steps**:
-1. M000 receives configuration update request
-2. M000 updates its local configuration
-3. M000 propagates to M100 (left child)
-4. M100 propagates to M110 and M120
-5. M110 propagates to M111 and M112
-6. M120 propagates to M121 and M122
-7. Simultaneously: M000 → M200 → M210/M220 → M211/M212/M221/M222
-8. All 15 nodes updated with new configuration
-
-**Token Consumption**: ~100-200 tokens
+1. M100 requests data from both children
+2. M110 aggregates from M111 (config) and M112 (logs)
+3. M120 aggregates from M121 (Excel) and M122 (SQL)
+4. M100 receives results from both M110 and M120
+5. M100 merges into unified infrastructure view
+6. Combined result returns to M000
 
 **Code Example**:
 ```python
 result = root.process({
-    "action": "configure",
-    "config": {
-        "log_level": "DEBUG",
-        "timeout": 60,
-        "max_retries": 5
-    },
-    "propagate": True  # Propagate to all children
+    "action": "get_infrastructure_status"
 })
-```
-
-**Propagation Order** (BFS):
-```
-M000 (root)
-├── M100, M200 (Level 1)
-├── M110, M120, M210, M220 (Level 2)
-└── M111, M112, M121, M122, M211, M212, M221, M222 (Level 3)
+# Returns merged data from config + database
 ```
 
 ---
 
-## Scenario 6: Error Handling (Failure with Retry)
+## Scenario 8: Error Propagation
 
-**Description**: Failure in leaf bubbles up with retry logic through parent.
+**Description**: Handle database error with retry logic.
 
 **Path**: `M122 → M120 → M100 (retry)`
 
 **External Interface**: Database (error case)
 
+**Token Consumption**: ~90 tokens
+
 **Steps**:
 1. M122 attempts database operation
-2. Operation fails (connection timeout, constraint violation)
-3. M122 returns error result to M120
+2. Operation fails (connection timeout)
+3. M122 returns error to M120
 4. M120 evaluates error type
 5. M120 initiates retry via M122 (up to max_retries)
-6. If retry succeeds: return success to M100
+6. If retry succeeds: return success
 7. If all retries fail: propagate error to M100
-8. M100 logs error and returns failure status to M000
-
-**Token Consumption**: ~40-100 tokens
 
 **Code Example**:
 ```python
-# Simulated error scenario
 result = root.process({
-    "action": "route_request",
-    "target": "infrastructure",
-    "request": {
-        "action": "query_db",
-        "sql": "SELECT * FROM invalid_table"  # Will fail
-    }
+    "action": "query_db",
+    "sql": "SELECT * FROM tenants WHERE id = 999"
 })
-# Returns: {"success": False, "error": "Table not found", "retries": 3}
+# On failure: {"success": False, "error": "...", "retries": 3}
 ```
 
 ---
 
-## Scenario 7: Load Balancing (Token Transfer Between Leaves)
+## Scenario 9: Load Rebalancing
 
-**Description**: Transfer tasks between leaves to balance token consumption.
+**Description**: Redistribute token budget across all leaves.
 
-**Path**: All leaves via M000 (TokenBalancer)
+**Path**: `M000 → all leaves` (via TokenBalancer)
 
 **External Interfaces**: None (internal operation)
 
-**Steps**:
-1. M000 detects unbalanced token usage across leaves
-2. TokenBalancer calculates current utilization per leaf
-3. Identifies over-utilized leaves (e.g., M211 at 90%)
-4. Identifies under-utilized leaves (e.g., M222 at 20%)
-5. Recalculates weights based on usage patterns
-6. Redistributes token budget across all 8 leaves
-7. Notifies affected nodes of new budgets
-
-**Token Consumption**: ~200-500 tokens
+**Token Consumption**: ~80 tokens
 
 **Complexity**: O(n²) for full rebalance
+
+**Steps**:
+1. M000 detects unbalanced token usage
+2. TokenBalancer calculates current utilization
+3. Identifies over/under-utilized leaves
+4. Recalculates weights based on usage
+5. Redistributes budget across all 8 leaves
+6. Notifies affected nodes
 
 **Code Example**:
 ```python
 result = root.process({
     "action": "rebalance"
 })
-# Returns new allocations for all leaves:
-# {"M111": 5000, "M112": 3000, "M121": 5000, "M122": 8000,
-#  "M211": 20000, "M212": 5000, "M221": 8000, "M222": 6000}
-```
-
-**Before/After Comparison**:
-```
-Before Rebalance:        After Rebalance:
-M211: 30000 (90% used)   M211: 25000 (72% used)
-M222: 3000 (20% used)    M222: 8000 (60% used)
+# Returns: {"M111": 12500, "M112": 12500, ..., "M222": 12500}
 ```
 
 ---
 
-## Scenario 8: Module Addition (Extending Tree with New Leaf)
+## Scenario 10: Full Pipeline
 
-**Description**: Extend the tree with a new leaf while preserving structure.
+**Description**: Complete end-to-end workflow using all four external interface types.
 
-**Path**: Parent node (e.g., M220) + New leaf (e.g., M223)
+**Path**: `M111 → M122 → M211 → M222`
 
-**External Interfaces**: New leaf's interface (e.g., Email)
+**External Interfaces**: YAML, Database, LLM API, PDF
 
-**Steps**:
-1. Identify parent node for new leaf (M220 - Output Handler)
-2. Create new leaf node directory structure
-3. Implement new leaf (M223 - Email Sender)
-4. Update parent (M220) to recognize new child
-5. Register new leaf with TokenBalancer
-6. Allocate initial token budget to M223
-7. Run tests to verify tree integrity
-8. Tree now has 16 nodes
-
-**Note**: In our binary tree, adding a leaf requires either:
-- Splitting an existing leaf into two children (converting it to internal)
-- Adding to a handler that can support dynamic children
-
-**Code Example** (conceptual):
-```python
-# 1. Create new leaf module
-# tree/M223/src/main.py
-class EmailSenderNode(LeafNode):
-    def __init__(self):
-        config = NodeConfig(
-            node_id="M223",
-            name="Email Sender",
-            level=NodeLevel.LEAF,
-            node_type=NodeType.INTERFACE,
-            parent_id="M220"
-        )
-        super().__init__(config)
-        self._interface_type = "email"
-
-# 2. Update parent to include new child
-# M220 now coordinates M221, M222, and M223
-```
-
----
-
-## Scenario 9: Results Merging (Combining Outputs)
-
-**Description**: Combine outputs from multiple leaves into unified result.
-
-**Path**: `M222 + M221 → M220 → M200 → M000`
-
-**External Interfaces**: Multiple (PDF, HTTP)
+**Token Consumption**: ~350 tokens
 
 **Steps**:
-1. M000 initiates report generation workflow
-2. M220 (Output Handler) receives request
-3. M220 calls M222 for PDF generation (parallel)
-4. M220 calls M221 for web notification (parallel)
-5. M222 returns PDF file path
-6. M221 returns HTTP response status
-7. M220 merges results into unified response
-8. Combined result returns to M000
-
-**Token Consumption**: ~150-250 tokens
+1. M111 reads YAML config (File I/O)
+2. Config propagates: M111 → M110 → M100 → M000
+3. M000 routes to M122 for database query (Database)
+4. Query result: M122 → M120 → M100 → M000
+5. M000 routes to M211 for LLM processing (API)
+6. LLM result: M211 → M210 → M200 → M000
+7. M000 routes to M222 for PDF generation (File I/O)
+8. PDF created: M222 → M220 → M200 → M000
+9. Complete workflow finished
 
 **Code Example**:
 ```python
 result = root.process({
-    "action": "full_workflow",
-    "workflow_type": "report_and_notify",
-    "data": {
-        "tenant_id": 123,
-        "report_type": "monthly",
-        "notify": True
-    }
+    "action": "full_pipeline",
+    "config_path": "config/settings.yaml",
+    "tenant_id": 123,
+    "generate_report": True
 })
-# Returns merged result:
-# {
-#   "pdf": {"path": "reports/tenant_123.pdf", "pages": 5},
-#   "notification": {"status": 200, "sent": True},
-#   "combined_success": True
-# }
-```
-
----
-
-## Scenario 10: Integration Testing (Node with Both Children)
-
-**Description**: Run tests on a node together with both its children.
-
-**Path**: `M120` with children `M121` and `M122`
-
-**External Interfaces**: Excel file, Database (via children)
-
-**Steps**:
-1. Initialize M120 (Database Handler) with both children
-2. Verify M121 (Excel Handler) connected correctly
-3. Verify M122 (SQL Database) connected correctly
-4. Test workflow: read Excel → insert to database
-5. Test workflow: query database → export to Excel
-6. Test error handling between children
-7. Test token budget propagation to children
-8. Verify all parent-child communication works
-
-**Test Commands**:
-```bash
-# Run integration tests for M120 with children
-python -m pytest tree/M120/tests/ -v -k "integration"
-
-# Run full subtree tests
-python -m pytest tree/M120/tests/ tree/M121/tests/ tree/M122/tests/ -v
-```
-
-**Code Example**:
-```python
-def test_m120_integration_with_children():
-    """Test M120 coordinates both M121 and M122 correctly."""
-    # Create M120 with real children
-    m120 = DatabaseHandlerNode()
-
-    # Test Excel → Database flow
-    result = m120.process({
-        "action": "import_data",
-        "source": {"type": "excel", "path": "data/tenants.xlsx"},
-        "target": {"type": "database", "table": "tenants"}
-    })
-    assert result.success
-
-    # Verify both children were called
-    assert m120.left.was_called  # M121 (Excel)
-    assert m120.right.was_called  # M122 (Database)
 ```
 
 ---
 
 ## Summary Table
 
-| # | Scenario | Description | Path |
-|---|----------|-------------|------|
-| 1 | External Data Ingestion | Data flowing upward through tree | M111→M110→M100→M000 |
-| 2 | LLM Reading | Request and response to LLM | M000→M200→M210→M211 |
-| 3 | Modular Debugging | Coverage/linter check and fix | Single node |
-| 4 | Hierarchical Aggregation | Data collection from leaves to root | Leaves→Root |
-| 5 | Configuration Update | Root change propagating downward | M000→All nodes |
-| 6 | Error Handling | Failure with retry through parent | M122→M120→retry |
-| 7 | Load Balancing | Token transfer between leaves | All leaves |
-| 8 | Module Addition | Extending tree with new leaf | Parent + new leaf |
-| 9 | Results Merging | Combining outputs from leaves | Multiple leaves→parent |
-| 10 | Integration Testing | Testing node with both children | Node + both children |
+| # | Scenario | Path | Tokens | Interface |
+|---|----------|------|--------|-----------|
+| 1 | Config Load | M111→M110→M100→M000 | ~120 | YAML File |
+| 2 | Tenant Query | M122→M120→M100→M000 | ~180 | Database |
+| 3 | Excel Import | M121→M120→M100→M000 | ~150 | Excel File |
+| 4 | MCP Tool Call | M000→M200→M210→M211 | ~200 | LLM API |
+| 5 | PDF Generation | M000→M200→M220→M222 | ~160 | PDF File |
+| 6 | Web API Request | M221→M220→M200→M000 | ~140 | HTTP REST |
+| 7 | Hierarchical Merge | M110+M120→M100 | ~130 | Multiple |
+| 8 | Error Propagation | M122→M120→M100 | ~90 | Database |
+| 9 | Load Rebalancing | M000→all leaves | ~80 | Internal |
+| 10 | Full Pipeline | M111→M122→M211→M222 | ~350 | All types |
+
+**Total Token Consumption**: ~1,350 tokens
 
 ---
 
@@ -428,10 +329,12 @@ python scripts/run_scenarios.py --scenario 10
 
 # Run with verbose output
 python scripts/run_scenarios.py --verbose
-
-# Output includes:
-# - Success/failure status for each scenario
-# - Token consumption
-# - Nodes traversed
-# - Execution details
 ```
+
+---
+
+## References
+
+- See [technical_report.md](technical_report.md) for detailed analysis
+- See [RESEARCH.md](RESEARCH.md) for experiment results
+- See [CONFIG.md](CONFIG.md) for token budget configuration
