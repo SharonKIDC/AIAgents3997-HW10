@@ -1,5 +1,12 @@
 # Literature Review: BST Agent Orchestration
 
+> **Related documentation:**
+> - [optimization_comparison.md](optimization_comparison.md) - Algorithm comparisons
+> - [RESEARCH.md](RESEARCH.md) - Research summary with experiments
+> - [technical_report.md](technical_report.md) - Full technical report
+
+---
+
 ## 1. Primary Reference
 
 ### Segal, R. (2024). *Managing an Army of Agents*

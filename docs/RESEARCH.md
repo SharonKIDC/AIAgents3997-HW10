@@ -21,24 +21,17 @@ Implement and validate a Binary Spanning Tree (BST) architecture for AI agent or
 
 ## Literature Summary
 
+> For detailed literature review, see [literature.md](literature.md).
+> For algorithm comparisons, see [optimization_comparison.md](optimization_comparison.md).
+
 ### Primary Sources
 
-1. **Segal, R. (2024)** - *Managing an Army of Agents*, Sections 4 & 9
-   - Core architecture: Binary Spanning Tree for agent orchestration
-   - The Leaf Law: External interfaces restricted to leaf nodes
-   - Token-based resource allocation
-
-2. **Cormen et al. (2009)** - *Introduction to Algorithms*, Chapter 23
-   - Minimum Spanning Tree algorithms (Prim, Kruskal)
-   - Complexity: $O(E \log V)$
-
-3. **Adelson-Velsky & Landis (1962)** - AVL Trees
-   - Self-balancing binary search trees
-   - Rotation-based rebalancing: $O(\log n)$
-
-4. **Souravlas et al. (2019)** - ProMo Probabilistic Model
-   - Statistical scheduling for distributed systems
-   - Predictive resource allocation
+| Source | Contribution |
+|--------|--------------|
+| Segal (2024) | BST Architecture, Leaf Law, Token allocation |
+| Cormen et al. (2009) | MST algorithms: $O(E \log V)$ |
+| Adelson-Velsky & Landis (1962) | AVL rotations: $O(\log n)$ |
+| Souravlas et al. (2019) | ProMo probabilistic scheduling |
 
 ---
 

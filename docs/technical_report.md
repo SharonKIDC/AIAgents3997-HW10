@@ -102,21 +102,13 @@ class TokenBalancer:
 
 ## 3. Literature Survey: Optimization Methods
 
+> For detailed literature review, see [literature.md](literature.md).
+> For full algorithm comparisons, see [optimization_comparison.md](optimization_comparison.md).
+
 ### 3.1 Minimum Spanning Tree (Prim/Kruskal)
 
-**Source**: Cormen, T. H., Leiserson, C. E., Rivest, R. L., & Stein, C. (2009). *Introduction to Algorithms* (3rd ed.). MIT Press. Chapter 23.
+**Source**: Cormen et al. (2009). *Introduction to Algorithms*, Chapter 23.
 
-**Algorithm Overview**:
-- Finds optimal tree connecting all vertices with minimum total edge weight
-- Prim's: O(E log V) with binary heap
-- Kruskal's: O(E log E) with union-find
-
-**Application to BST Orchestration**:
-- Edges represent communication cost between agent modules
-- Could dynamically restructure tree topology based on communication patterns
-- Not used here because we require fixed binary structure
-
-**Comparison**:
 | Aspect | MST | Our BST |
 |--------|-----|---------|
 | Structure | Any spanning tree | Binary only |

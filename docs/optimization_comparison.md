@@ -2,6 +2,11 @@
 
 This document compares the load balancing approach used in our BST architecture with alternative optimization methods from academic literature.
 
+> **Related documentation:**
+> - [literature.md](literature.md) - Detailed literature review
+> - [RESEARCH.md](RESEARCH.md) - Research summary with LaTeX formulations
+> - [technical_report.md](technical_report.md) - Full technical report
+
 ## 1. Our Approach: Weighted Token Distribution
 
 ### Algorithm
