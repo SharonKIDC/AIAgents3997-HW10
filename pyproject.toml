@@ -15,9 +15,11 @@ authors = [
 
 dependencies = []
 
-[tool.setuptools.packages.find]
-include = ["shared*", "tree*"]
-exclude = ["results*", "notebooks*", "scripts*", "docs*"]
+[tool.setuptools]
+packages = ["shared", "shared.types", "shared.utils", "shared.interfaces", "shared.tests"]
+
+[tool.setuptools.package-dir]
+"" = "."
 
 [project.optional-dependencies]
 dev = [
