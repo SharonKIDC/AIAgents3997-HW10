@@ -61,6 +61,57 @@ The root node distributes a token budget across all leaves using a weighted algo
 - O(log n) for single leaf balance
 - O(n²) for full rebalance
 
+### Data Flow Architecture
+
+```mermaid
+flowchart LR
+    subgraph External["External I/O (Leaves Only)"]
+        YAML[(YAML Files)]
+        LOG[(Log Files)]
+        EXCEL[(Excel Files)]
+        SQL[(SQL Database)]
+        API1([LLM API])
+        API2([MCP API])
+        HTTP([HTTP/REST])
+        PDF[(PDF Files)]
+    end
+
+    subgraph L3["Level 3 - Interfaces"]
+        M111 & M112 & M121 & M122 & M211 & M212 & M221 & M222
+    end
+
+    subgraph L2["Level 2 - Handlers"]
+        M110 & M120 & M210 & M220
+    end
+
+    subgraph L1["Level 1 - Managers"]
+        M100 & M200
+    end
+
+    subgraph L0["Level 0 - Root"]
+        M000
+    end
+
+    YAML <--> M111
+    LOG <--> M112
+    EXCEL <--> M121
+    SQL <--> M122
+    API1 <--> M211
+    API2 <--> M212
+    HTTP <--> M221
+    PDF <--> M222
+
+    M111 & M112 <--> M110
+    M121 & M122 <--> M120
+    M211 & M212 <--> M210
+    M221 & M222 <--> M220
+
+    M110 & M120 <--> M100
+    M210 & M220 <--> M200
+
+    M100 & M200 <--> M000
+```
+
 ## Quick Start
 
 ```bash
@@ -112,6 +163,10 @@ AIAgents3997-HW10/
 ├── README.md                 # This file
 ├── pyproject.toml            # Project configuration
 ├── docs/
+│   ├── PRD.md                # Product requirements
+│   ├── Architecture.md       # System architecture
+│   ├── RESEARCH.md           # Research with LaTeX formulations
+│   ├── literature.md         # Literature review
 │   ├── technical_report.md   # Full technical report
 │   ├── optimization_comparison.md
 │   └── scenario_simulations.md
@@ -124,6 +179,10 @@ AIAgents3997-HW10/
 │   ├── types/                # Node type definitions
 │   ├── utils/                # TokenBalancer, etc.
 │   └── interfaces/           # External interface contracts
+├── results/
+│   └── metrics/              # Experiment metrics (JSON)
+├── notebooks/
+│   └── research_summary.ipynb # Jupyter notebook with analysis
 └── scripts/
     ├── run_coverage.py
     ├── run_linter.py
