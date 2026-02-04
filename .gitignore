@@ -1,5 +1,6 @@
 # Claude Code
 .claude/
+.claudeignore
 
 # Virtual environment
 venv/
