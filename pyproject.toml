@@ -8,12 +8,16 @@ version = "1.0.0"
 description = "Binary Spanning Tree Architecture for AI Agent Orchestration"
 readme = "README.md"
 requires-python = ">=3.9"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
     {name = "Student", email = "student@example.com"}
 ]
 
 dependencies = []
+
+[tool.setuptools.packages.find]
+include = ["shared*", "tree*"]
+exclude = ["results*", "notebooks*", "scripts*", "docs*"]
 
 [project.optional-dependencies]
 dev = [
