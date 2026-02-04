@@ -214,11 +214,82 @@ TokenBalancer(
 
 ### Visualizations
 
-See `results/figures/` for:
-- Tree structure diagram
-- Token distribution heatmap
-- Complexity comparison chart
-- Scenario execution timeline
+#### Figure 1: Token Distribution Flow
+
+```mermaid
+flowchart TD
+    M000["M000<br/>100,000 tokens"]
+    M100["M100<br/>50,000"]
+    M200["M200<br/>50,000"]
+    M110["M110<br/>25,000"]
+    M120["M120<br/>25,000"]
+    M210["M210<br/>25,000"]
+    M220["M220<br/>25,000"]
+    M111["M111<br/>12,500"]
+    M112["M112<br/>12,500"]
+    M121["M121<br/>12,500"]
+    M122["M122<br/>12,500"]
+    M211["M211<br/>12,500"]
+    M212["M212<br/>12,500"]
+    M221["M221<br/>12,500"]
+    M222["M222<br/>12,500"]
+
+    M000 -->|50%| M100
+    M000 -->|50%| M200
+    M100 -->|50%| M110
+    M100 -->|50%| M120
+    M200 -->|50%| M210
+    M200 -->|50%| M220
+    M110 -->|50%| M111
+    M110 -->|50%| M112
+    M120 -->|50%| M121
+    M120 -->|50%| M122
+    M210 -->|50%| M211
+    M210 -->|50%| M212
+    M220 -->|50%| M221
+    M220 -->|50%| M222
+```
+
+#### Figure 2: Complexity Comparison
+
+```mermaid
+xychart-beta
+    title "Algorithm Complexity Comparison (log scale)"
+    x-axis ["Query", "Balance", "Rebalance"]
+    y-axis "Operations" 1 --> 1000
+    bar [1, 4, 225]
+    line [1, 4, 225]
+```
+
+| Operation | Our BST | AVL | ProMo |
+|-----------|---------|-----|-------|
+| Query | O(1) | O(log n) | O(1) |
+| Balance | O(log n) | O(log n) | O(1) |
+| Rebalance | O(n²) | O(n log n) | O(n) |
+
+#### Figure 3: Scenario Execution Timeline
+
+```mermaid
+gantt
+    title Scenario Token Usage
+    dateFormat X
+    axisFormat %s
+
+    section Data Flow
+    Config Load (120)      :0, 120
+    Tenant Query (180)     :0, 180
+    Excel Import (150)     :0, 150
+
+    section API Calls
+    MCP Tool (200)         :0, 200
+    Web API (140)          :0, 140
+
+    section Output
+    PDF Gen (160)          :0, 160
+
+    section Complex
+    Full Pipeline (350)    :0, 350
+```
 
 ---
 
